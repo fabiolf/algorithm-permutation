@@ -58,11 +58,17 @@ public class Deque<Item> implements Iterable<Item> {
         if (item == null)
             throw new java.lang.IllegalArgumentException("received null item");
         
-        Node oldfirst = m_first;
+        Node oldfirst = null;
+        if (m_first != null)
+            oldfirst = m_first;
         m_first = new Node();
         m_first.m_item = item;
-        m_first.m_next = oldfirst;
-        oldfirst.m_prior = m_first;
+        if (oldfirst != null) {
+            m_first.m_next = oldfirst;
+            oldfirst.m_prior = m_first;
+        } else
+            m_last = m_first;
+        m_size++;
     }
     
     public void addLast(Item item) {
@@ -71,11 +77,17 @@ public class Deque<Item> implements Iterable<Item> {
         if (item == null)
             throw new java.lang.IllegalArgumentException("received null item");
 
-        Node oldlast = m_last;
+        Node oldlast = null;
+        if (m_last != null)
+            oldlast = m_last;
         m_last = new Node();
         m_last.m_item = item;
-        m_last.m_prior = oldlast;
-        oldlast.m_next = m_last;
+        if (oldlast != null) {
+            m_last.m_prior = oldlast;
+            oldlast.m_next = m_last;
+        } else
+            m_first = m_last;
+        m_size++;
     }
     
     public Item removeFirst() {
@@ -84,8 +96,14 @@ public class Deque<Item> implements Iterable<Item> {
             throw new java.util.NoSuchElementException();
         
         Item item = m_first.m_item;
-        m_first = m_first.m_next;
-        m_first.m_prior = null;
+        if (m_first == m_last) {
+            m_first = null;
+            m_last = null;
+        } else {
+            m_first = m_first.m_next;
+            m_first.m_prior = null;
+        }
+        m_size--;
         return item;
     }
     
@@ -95,8 +113,14 @@ public class Deque<Item> implements Iterable<Item> {
             throw new java.util.NoSuchElementException();
         
         Item item = m_last.m_item;
-        m_last = m_last.m_prior;
-        m_last.m_next = null;
+        if (m_first == m_last) {
+            m_first = null;
+            m_last = null;
+        } else {
+            m_last = m_last.m_prior;
+            m_last.m_next = null;
+        }
+        m_size--;
         return item;
     }
     
@@ -105,8 +129,40 @@ public class Deque<Item> implements Iterable<Item> {
         return new DequeIterator();
     }
     
+//    public static void printDeque(Deque dq) {
+//        String line = "";
+//        for (Object str : dq) {
+//            line += str;
+//            line += " ";
+//        }
+//        System.out.println("Size: " + dq.size() + " | " + line);
+//    }
+
     public static void main(String[] args) {
-        // TODO Auto-generated method stub
+//        //addFirst
+//        Deque<String> dq = new Deque<String>();
+//        
+//        dq.addFirst("a");
+//        printDeque(dq);
+//        
+//        //addLast
+//        Deque<String> dq2 = new Deque<String>();
+//        
+//        dq2.addLast("a");
+//        printDeque(dq2);
+//        
+//        dq2.addLast("b");
+//        printDeque(dq2);
+//
+//        dq2.addFirst("c");
+//        printDeque(dq2);
+//        
+//        dq2.removeLast();
+//        printDeque(dq2);
+//
+//        dq2.removeFirst();
+//        printDeque(dq2);
+
     }
 
 }
