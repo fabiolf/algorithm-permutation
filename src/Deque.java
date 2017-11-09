@@ -2,31 +2,31 @@ import java.util.Iterator;
 
 public class Deque<Item> implements Iterable<Item> {
     
-    private Node m_first;
-    private Node m_last;
-    private int m_size;
+    private Node mFirst;
+    private Node mLast;
+    private int mSize;
     
     private class Node {
-        Item m_item;
-        Node m_next;
-        Node m_prior;
+        Item mItem;
+        Node mNext;
+        Node mPior;
     }
     
     private class DequeIterator implements Iterator<Item> {
 
-        private Node m_current = m_first;
+        private Node mCurrent = mFirst;
         
         @Override
         public boolean hasNext() {
-            return m_current != null;
+            return mCurrent != null;
         }
 
         @Override
         public Item next() {
             if (!hasNext())
                 throw new java.util.NoSuchElementException("no more items to iterate");
-            Item item = m_current.m_item;
-            m_current = m_current.m_next;
+            Item item = mCurrent.mItem;
+            mCurrent = mCurrent.mNext;
             return item;
         }
         
@@ -37,19 +37,19 @@ public class Deque<Item> implements Iterable<Item> {
     
     public Deque() {
         // construct an empty deque
-        m_first = null;
-        m_last = null;
-        m_size = 0;
+        mFirst = null;
+        mLast = null;
+        mSize = 0;
     }
     
     public boolean isEmpty() {
         // is the deque empty?
-        return (m_first == null);
+        return (mFirst == null);
     }
     
     public int size() {
         // return the number of items on the deque
-        return m_size;
+        return mSize;
     }
     
     public void addFirst(Item item) {
@@ -59,16 +59,16 @@ public class Deque<Item> implements Iterable<Item> {
             throw new java.lang.IllegalArgumentException("received null item");
         
         Node oldfirst = null;
-        if (m_first != null)
-            oldfirst = m_first;
-        m_first = new Node();
-        m_first.m_item = item;
+        if (mFirst != null)
+            oldfirst = mFirst;
+        mFirst = new Node();
+        mFirst.mItem = item;
         if (oldfirst != null) {
-            m_first.m_next = oldfirst;
-            oldfirst.m_prior = m_first;
+            mFirst.mNext = oldfirst;
+            oldfirst.mPior = mFirst;
         } else
-            m_last = m_first;
-        m_size++;
+            mLast = mFirst;
+        mSize++;
     }
     
     public void addLast(Item item) {
@@ -78,16 +78,16 @@ public class Deque<Item> implements Iterable<Item> {
             throw new java.lang.IllegalArgumentException("received null item");
 
         Node oldlast = null;
-        if (m_last != null)
-            oldlast = m_last;
-        m_last = new Node();
-        m_last.m_item = item;
+        if (mLast != null)
+            oldlast = mLast;
+        mLast = new Node();
+        mLast.mItem = item;
         if (oldlast != null) {
-            m_last.m_prior = oldlast;
-            oldlast.m_next = m_last;
+            mLast.mPior = oldlast;
+            oldlast.mNext = mLast;
         } else
-            m_first = m_last;
-        m_size++;
+            mFirst = mLast;
+        mSize++;
     }
     
     public Item removeFirst() {
@@ -95,15 +95,15 @@ public class Deque<Item> implements Iterable<Item> {
         if (this.isEmpty())
             throw new java.util.NoSuchElementException();
         
-        Item item = m_first.m_item;
-        if (m_first == m_last) {
-            m_first = null;
-            m_last = null;
+        Item item = mFirst.mItem;
+        if (mFirst == mLast) {
+            mFirst = null;
+            mLast = null;
         } else {
-            m_first = m_first.m_next;
-            m_first.m_prior = null;
+            mFirst = mFirst.mNext;
+            mFirst.mPior = null;
         }
-        m_size--;
+        mSize--;
         return item;
     }
     
@@ -112,15 +112,15 @@ public class Deque<Item> implements Iterable<Item> {
         if (this.isEmpty())
             throw new java.util.NoSuchElementException();
         
-        Item item = m_last.m_item;
-        if (m_first == m_last) {
-            m_first = null;
-            m_last = null;
+        Item item = mLast.mItem;
+        if (mFirst == mLast) {
+            mFirst = null;
+            mLast = null;
         } else {
-            m_last = m_last.m_prior;
-            m_last.m_next = null;
+            mLast = mLast.mPior;
+            mLast.mNext = null;
         }
-        m_size--;
+        mSize--;
         return item;
     }
     
@@ -141,25 +141,18 @@ public class Deque<Item> implements Iterable<Item> {
     public static void main(String[] args) {
 //        //addFirst
 //        Deque<String> dq = new Deque<String>();
-//        
 //        dq.addFirst("a");
 //        printDeque(dq);
-//        
 //        //addLast
 //        Deque<String> dq2 = new Deque<String>();
-//        
 //        dq2.addLast("a");
 //        printDeque(dq2);
-//        
 //        dq2.addLast("b");
 //        printDeque(dq2);
-//
 //        dq2.addFirst("c");
 //        printDeque(dq2);
-//        
 //        dq2.removeLast();
 //        printDeque(dq2);
-//
 //        dq2.removeFirst();
 //        printDeque(dq2);
 

@@ -7,23 +7,25 @@ public class Permutation {
             System.out.println("need at least one argument: the size of the array to be read");
             return;
         }
+        
+//        for (String str : args)
+//            System.out.println(str);
 
         RandomizedQueue<String> rq = new RandomizedQueue<String>();
 
         int k = Integer.parseInt(args[0]);
         
-        while (true) {
-            String str;
-            try {
-                str = StdIn.readString();
-            } catch (Exception e) {
-                break;
-            }
+        String str = null;
+        while (!StdIn.isEmpty()) {
+            str = StdIn.readString();
+//            System.out.println(str);
             rq.enqueue(str);
+            // boolean b3 = StdIn.hasNextLine();
         }
+//        System.out.println("finished!");
         
         for (int i = 0; i < k; i++) {
-            String str = rq.dequeue();
+            str = rq.dequeue();
             System.out.println(str);
         }
     }

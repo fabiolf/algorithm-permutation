@@ -3,72 +3,74 @@ import edu.princeton.cs.algs4.StdRandom;
 
 public class RandomizedQueue<Item> implements Iterable<Item> {
 
-    private int m_last_element = 0;
-    private Item[] m_array;
+    private int mLastElement = 0;
+    private Item[] mArray;
 
     private class RQIterator implements Iterator<Item> {
-        int m_pointer = 0;
+        int mPointer = 0;
+        private Item[] mLocalArray;
         
         public RQIterator() {
-            StdRandom.shuffle(m_array, 0, m_last_element);
+            mLocalArray = (Item[]) new Object[mLastElement];
+            for (int i = 0; i < mLastElement; i++)
+                mLocalArray[i] = mArray[i];
+            StdRandom.shuffle(mLocalArray, 0, mLastElement);
         }
         
         @Override
         public boolean hasNext() {
-            return (!isEmpty() && (m_pointer < m_last_element));
+            return (!isEmpty() && (mPointer < mLastElement));
         }
 
         @Override
         public Item next() {
-            if (m_pointer > m_last_element)
+            if (mPointer >= mLastElement)
                 throw new java.util.NoSuchElementException("end of queue");
             
-            Item item = m_array[m_pointer];
-            m_pointer++;
+            Item item = mLocalArray[mPointer];
+            mPointer++;
             return item;
         }
         
-        public void remove () {
+        public void remove() {
             throw new java.lang.UnsupportedOperationException("remove method not implemented");
         }
     }
     
-    @SuppressWarnings("unchecked")
     public RandomizedQueue() {
         // construct an empty randomized queue
-        m_array = (Item[]) new Object[1];
+        mArray = (Item[]) new Object[1];
         StdRandom.uniform();
     }
 
-    @SuppressWarnings("unchecked")
     private void resize(int capacity) {
         Item[] copy = (Item[]) new Object[capacity];
-        for (int i = 0; i < m_last_element; i++) {
-            copy[i] = m_array[i];
+        for (int i = 0; i < mLastElement; i++) {
+            copy[i] = mArray[i];
         }
         
-        m_array = copy;
+        mArray = copy;
     }
     
     public boolean isEmpty() {
         // is the randomized queue empty?
-        return (m_last_element == 0);
+        return (mLastElement == 0);
     }
    
     public int size() {
         // return the number of items on the randomized queue
-        return m_last_element;
+        return mLastElement;
     }
    
     public void enqueue(Item item) {
         if (item == null)
             throw new java.lang.IllegalArgumentException("tried to enqueue a null element");
         // enqueue the item
-        if (m_array.length == m_last_element)
-            resize(m_array.length * 2);
+        if (mArray.length == mLastElement)
+            resize(mArray.length * 2);
         
-        m_array[m_last_element] = item;
-        m_last_element++;
+        mArray[mLastElement] = item;
+        mLastElement++;
     }
    
     public Item dequeue() {
@@ -76,14 +78,14 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         if (isEmpty())
             throw new java.util.NoSuchElementException("trying to dequeue from an empty queue");
         
-        int random_pos = StdRandom.uniform(m_last_element);
-        Item item = m_array[random_pos];
-        m_array[random_pos] = m_array[m_last_element-1];
-        m_array[m_last_element-1] = null;
-        m_last_element--;
+        int randomPos = StdRandom.uniform(mLastElement);
+        Item item = mArray[randomPos];
+        mArray[randomPos] = mArray[mLastElement-1];
+        mArray[mLastElement-1] = null;
+        mLastElement--;
         
-        if (m_last_element <= m_array.length / 4)
-            resize(m_array.length / 2);
+        if (mLastElement > 0 && mLastElement <= mArray.length / 4)
+            resize(mArray.length / 2);
         
         return item;
     }
@@ -92,7 +94,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         if (isEmpty())
             throw new java.util.NoSuchElementException("trying to sample an empty queue");
         
-        return m_array[StdRandom.uniform(m_array.length)];
+        return mArray[StdRandom.uniform(mLastElement)];
     }
    
     public Iterator<Item> iterator() {
@@ -106,8 +108,8 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 //            line += str;
 //            line += " ";
 //        }
-//        int len = rq.m_array.length;
-//        int last = rq.m_last_element;
+//        int len = rq.mArray.length;
+//        int last = rq.mLastElement;
 //        System.out.println("Elements: " + rq.size() + " Len: " + len + " Last: " + last + " | " + line);
 //    } 
   
